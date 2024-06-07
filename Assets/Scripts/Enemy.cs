@@ -15,10 +15,14 @@ public class Enemy : MonoBehaviour, IInteractable
 		StartCoroutine(Attack());
 	}
 
+	private void OnEnable()
+	{
+		_shootBullet.Action();
+	}
+
 	private IEnumerator Attack()
 	{
 		WaitForSecondsRealtime whait = new(_shootDelay);
-		yield return whait;
 
 		while (enabled)
 		{
@@ -33,7 +37,7 @@ public class Enemy : MonoBehaviour, IInteractable
 		{
 			ScorePoint scorePoint = Instantiate(_prefab);
 			scorePoint.transform.position = transform.position;
-			gameObject.SetActive(false);
+			Destroy(gameObject);
 		}
 	}
 }

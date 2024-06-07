@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b7044bf8650ab8469aaf3ce10f8ee03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shootDelay: 5
+  _shootDelay: 3
   _prefab: {fileID: 2182599576192901154, guid: 8b420f85f35622443a0c89b036516283, type: 3}
 --- !u!212 &380740353345214291
 SpriteRenderer:
