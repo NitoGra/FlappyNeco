@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
-	[SerializeField] private Transform _container;
 	[SerializeField] private Enemy _prefab;
 
 	private Queue<Enemy> _pool;
@@ -27,10 +26,5 @@ public class ObjectPool : MonoBehaviour
 	{
 		_pool.Enqueue(enemy);
 		enemy.gameObject.SetActive(false);
-	}
-
-	public void Reset()
-	{
-		_pool.Clear();
 	}
 }

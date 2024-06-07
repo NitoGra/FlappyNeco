@@ -1,16 +1,18 @@
-using System;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviour, IInteractable
 {
-	private float _destroyDelay = 2f;
-	private int _ignoreColliderCount = 1;
-
-	public event Action Died;
+	[SerializeField] private float _destroyDelay;
+	[SerializeField] private float _speed;
 
 	private void Start()
 	{
 		Invoke(nameof(Destroy), _destroyDelay);
+	}
+
+	private void FixedUpdate()
+	{
+		transform.position += transform.right * _speed * Time.deltaTime;
 	}
 
 	private void Destroy()
@@ -22,13 +24,6 @@ public class Bullet : MonoBehaviour
 	{
 		if (collision.TryGetComponent(out ShootBullet shootBullet))
 		{
-			if (_ignoreColliderCount != 0)
-			{
-				_ignoreColliderCount--;
-				return;
-			}
-			shootBullet.GetComponent<IMakeAnimation>();
-			Died?.Invoke();
 			Destroy();
 		}
 	}

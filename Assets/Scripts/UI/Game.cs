@@ -3,9 +3,10 @@ using UnityEngine;
 public class Game : MonoBehaviour
 {
 	[SerializeField] private Neco _neco;
-	[SerializeField] private EnemyGenerator _pipeGenerator;
+	[SerializeField] private EnemyGenerator _enemyGenerator;
 	[SerializeField] private StartScreen _startScreen;
 	[SerializeField] private EndGameScreen _endGameScreen;
+	[SerializeField] private Canvas _scoreScreen;
 
 	private void OnEnable()
 	{
@@ -24,6 +25,7 @@ public class Game : MonoBehaviour
 	private void Start()
 	{
 		Time.timeScale = 0;
+		_scoreScreen.enabled = false;
 		_startScreen.Open();
 	}
 
@@ -42,6 +44,7 @@ public class Game : MonoBehaviour
 	{
 		_startScreen.Close();
 		StartGame();
+		_scoreScreen.enabled = true;
 	}
 
 	private void StartGame()

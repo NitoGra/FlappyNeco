@@ -8,14 +8,22 @@ public class EnemyGenerator : MonoBehaviour
 	[SerializeField] private float _upperBound;
 	[SerializeField] private float _lowerBound;
 
-	private void Start()
+	private Coroutine _coroutine;
+
+	private void OnEnable()
 	{
-		StartCoroutine(GeneratePipes());
+		_coroutine = StartCoroutine(GeneratePipes());
+	}
+
+	private void OnDisable()
+	{
+		StopCoroutine(_coroutine);
+		_coroutine = null;
 	}
 
 	private IEnumerator GeneratePipes()
 	{
-		WaitForSeconds wait = new (_delay);
+		WaitForSeconds wait = new(_delay);
 
 		while (enabled)
 		{

@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-[RequireComponent(typeof(ShootBullet), typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class NecoMover : MonoBehaviour
 {
 	[SerializeField] private float _tapForce;
@@ -10,19 +9,17 @@ public class NecoMover : MonoBehaviour
 	[SerializeField] private float _maxRotationZ;
 	[SerializeField] private float _minRotationZ;
 
+	private KeyCode _flyButton = KeyCode.Space;
+
 	private Vector3 _startPosition;
 	private Rigidbody2D _rigidbody2D;
-	private ShootBullet _shootBullet;
 	private Quaternion _maxRotation;
 	private Quaternion _minRotation;
-
-	public event Action Fire;
 
 	private void Start()
 	{
 		_startPosition = transform.position;
 		_rigidbody2D = GetComponent<Rigidbody2D>();
-		_shootBullet = GetComponent<ShootBullet>();
 
 		_maxRotation = Quaternion.Euler(0, 0, _maxRotationZ);
 		_minRotation = Quaternion.Euler(0, 0, _minRotationZ);
@@ -32,12 +29,10 @@ public class NecoMover : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(_flyButton))
 		{
-			Fire?.Invoke();
 			_rigidbody2D.velocity = new(_speed, _tapForce);
 			transform.rotation = _maxRotation;
-			_shootBullet.Action();
 		}
 
 		transform.rotation = Quaternion.Lerp(transform.rotation, _minRotation, _rotationSpeed * Time.deltaTime);

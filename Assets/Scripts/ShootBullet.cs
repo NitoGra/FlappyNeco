@@ -10,8 +10,7 @@ public class ShootBullet : MonoBehaviour
 
 	public void Action()
 	{
-		Rigidbody2D bullet = Instantiate(_bullet, _gunBarrel.position, Quaternion.identity);
-		bullet.AddForce(transform.position * _bulletForse);
+		Rigidbody2D bullet = Instantiate(_bullet, _gunBarrel.position, transform.rotation);
 
 		if (_bulletForse < 0)
 			bullet.transform.rotation = _backwardRotation;

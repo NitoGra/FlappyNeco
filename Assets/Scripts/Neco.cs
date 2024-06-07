@@ -11,6 +11,7 @@ public class Neco : MonoBehaviour
 	private NecoCollisionHandler _handler;
 
 	public event Action GameOver;
+	public event Action GameReset;
 
 	private void Awake()
 	{
@@ -31,19 +32,19 @@ public class Neco : MonoBehaviour
 
 	private void ProcessCollision(IInteractable interactable)
 	{
-		if (interactable is Enemy)
-		{
-			GameOver?.Invoke();
-		}
-
-		else if (interactable is ScoreZone)
+		if (interactable is ScorePoint)
 		{
 			_scoreCounter.Add();
+			return;
 		}
+
+		GameOver?.Invoke();
 	}
 
 	public void Reset()
 	{
+		GameReset?.Invoke();
+
 		_scoreCounter.Reset();
 		_necoMover.Reset();
 	}

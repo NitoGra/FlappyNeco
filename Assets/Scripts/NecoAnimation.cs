@@ -1,32 +1,35 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Animator), typeof(NecoMover))]
-public class NecoAnimation : MonoBehaviour, IMakeAnimation
+[RequireComponent(typeof(Animator), typeof(NecoShoot), typeof(Neco))]
+public class NecoAnimation : MonoBehaviour
 {
 	private readonly int NecoFire = Animator.StringToHash(nameof(NecoFire));
 	private readonly int NecoDead = Animator.StringToHash(nameof(NecoDead));
 	private readonly int NecoIdle = Animator.StringToHash(nameof(NecoIdle));
 
-	private Bullet _bullet; 
-	private NecoMover _neco;
+	private Neco _neco;
+	private NecoShoot _necoShoot;
 	private Animator _animator;
 
-	private void Start()
+	private void Awake()
 	{
 		_animator = GetComponent<Animator>();
-		_neco = GetComponent<NecoMover>();
+		_necoShoot = GetComponent<NecoShoot>();
+		_neco = GetComponent<Neco>();
 	}
 
 	private void OnEnable()
 	{
-		_neco.Fire += OnFire;
-		_bullet.Died += OnDied;
+		_necoShoot.Fire += OnFire;
+		_neco.GameOver += OnDied;
+		_neco.GameReset += OnReset;
 	}
 
 	private void OnDisable()
 	{
-		_neco.Fire -= OnFire;
-		_bullet.Died -= OnDied;
+		_necoShoot.Fire -= OnFire;
+		_neco.GameOver -= OnDied;
+		_neco.GameReset -= OnReset;
 	}
 
 	private void OnDied()
@@ -39,8 +42,8 @@ public class NecoAnimation : MonoBehaviour, IMakeAnimation
 		_animator.Play(NecoFire);
 	}
 
-	public void SetBullet(Bullet bullet)
+	private void OnReset()
 	{
-		_bullet = bullet;
+		_animator.Play(NecoIdle);
 	}
 }
