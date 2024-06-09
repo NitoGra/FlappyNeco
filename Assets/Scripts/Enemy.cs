@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Pool;
 
 [RequireComponent(typeof(ShootBullet))]
 public class Enemy : MonoBehaviour, IInteractable
@@ -7,6 +8,7 @@ public class Enemy : MonoBehaviour, IInteractable
 	[SerializeField] private float _shootDelay;
 	[SerializeField] private ScorePoint _prefab;
 
+	private ObjectPool<Enemy> _pool;
 	private ShootBullet _shootBullet;
 
 	private void Awake()
@@ -15,18 +17,13 @@ public class Enemy : MonoBehaviour, IInteractable
 		StartCoroutine(Attack());
 	}
 
-	private void OnEnable()
-	{
-		_shootBullet.Action();
-	}
-
 	private IEnumerator Attack()
 	{
 		WaitForSecondsRealtime whait = new(_shootDelay);
 
 		while (enabled)
 		{
-			_shootBullet.Action();
+			Shoot();
 			yield return whait;
 		}
 	}
@@ -37,7 +34,30 @@ public class Enemy : MonoBehaviour, IInteractable
 		{
 			ScorePoint scorePoint = Instantiate(_prefab);
 			scorePoint.transform.position = transform.position;
-			Destroy(gameObject);
+			Release();
 		}
+	}
+
+	public void BackToDefault()
+	{
+		gameObject.SetActive(true);
+		StartCoroutine(Attack());
+	}
+
+	public void SetSpawnSettings(ObjectPool<Enemy> pool, Neco neco)
+	{
+		_pool = pool;
+		Shoot();
+	}
+
+	public void Release()
+	{
+		_pool.Release(this);
+	}
+
+	public void Shoot()
+	{
+		print("выстрел"+ _shootBullet);
+		_shootBullet.Action();
 	}
 }

@@ -10,7 +10,16 @@ public class ShootBullet : MonoBehaviour
 
 	public void Action()
 	{
+		if (Time.timeScale == 0)
+		{
+			print("время остановлено");
+			return;
+		}
+
+
 		Rigidbody2D bullet = Instantiate(_bullet, _gunBarrel.position, transform.rotation);
+
+		print("пуля летит" + bullet);
 
 		if (_bulletForse < 0)
 			bullet.transform.rotation = _backwardRotation;
